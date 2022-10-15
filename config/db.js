@@ -8,11 +8,12 @@ export var mysqlConnection = mysql.createConnection({
     database: process.env.DB_NAME,
     password: process.env.DB_PASSWORD,
     port:process.env.DB_PORT,
+    multipleStatements: true,
 })
 
 mysqlConnection.connect((err)=>{
     if(!err)
-    console.log("Connected")
+    console.log("Connected To Database")
     else
     console.log("Error" + JSON.stringify(err,undefined, 2))
 })

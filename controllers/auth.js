@@ -14,7 +14,7 @@ export const login = (req,res)=> {
            
             bcrypt.compare(password , rows[0].password, function(err, result){
                 if(result){
-                   const token = jwt.sign({ user_id:rows[0].user_id ,firstname:rows[0].firstname, lastname:rows[0].lastname, phone:rows[0].phone, email:rows[0].email,isSuperUser: rows[0].isSuperUser }, process.env.SECRET_KEY, {expiresIn: '60s'});
+                   const token = jwt.sign({ user_id:rows[0].user_id ,firstname:rows[0].firstname, lastname:rows[0].lastname, phone:rows[0].phone, email:rows[0].email,isSuperUser: rows[0].isSuperUser }, process.env.SECRET_KEY, {expiresIn: '30m'});
                    return res
                    .cookie("access_token", token, {
                      httpOnly: true,
