@@ -16,7 +16,7 @@ router.post('/', createUser);
 // router.get('/:id', getUser)
 router.get('/getuser', getUser)
 
-router.delete('/deleteuser', deleteUser)
+// router.delete('/deleteuser', deleteUser)
 
 router.patch('/updateuser',updateUser)
 

@@ -19,7 +19,6 @@ to run server
     GET '/users/'   
     POST '/users/'
     GET '/users/getuser'
-    DELETE '/users/deleteuser'
     PATCH '/users/updateuser'
 
   -- Auth Endpoints
