@@ -16,21 +16,21 @@ to run server
 ## EndPoints- Visit Documentation For More Information
 
   --User Endpoints
-    GET '/'
-    POST '/'
-    GET '/getuser'
-    DELETE '/deleteuser'
-    PATCH '/updateuser'
+    GET '/users/'   
+    POST '/users/'
+    GET '/users/getuser'
+    DELETE '/users/deleteuser'
+    PATCH '/users/updateuser'
 
   -- Auth Endpoints
-    POST '/login'
-    GET '/logout'
+    POST '/auth/login'
+    GET '/auth/logout'
 
   -- Transactions Endpoints
-    POST '/deposit'
-    POST '/withdrawal'
-    POST '/transfer'
-    GET '/transactions'
+    POST '/transactions/deposit'
+    POST '/transactions/withdrawal'
+    POST '/transactions/transfer'
+    GET '/transactions/transactions'
    
 
 ## API Documentation
