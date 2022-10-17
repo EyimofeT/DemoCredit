@@ -13,7 +13,7 @@ install required packages:
 to run server
     -> npm run start
 
-##API Documentation
+## API Documentation
 
 https://documenter.getpostman.com/view/15065406/2s847Cwv3n
 
@@ -21,4 +21,8 @@ https://documenter.getpostman.com/view/15065406/2s847Cwv3n
 https://www.getpostman.com/collections/d159b6e9bcc0f0655522
 
 
-EndPoints                     -         Method 
+## Api Endpoint link on Heroku
+https://tuoyo-clifford-e-lendsqr-be-te.herokuapp.com/
+
+
+
