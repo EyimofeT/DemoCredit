@@ -10,14 +10,10 @@ const router = express.Router();
 
 // all routes in here are starting with /users
 router.get('/', getUsers);
-
 router.post('/', createUser);
-
-// router.get('/:id', getUser)
+//
 router.get('/getuser', getUser)
-
 // router.delete('/deleteuser', deleteUser)
-
 router.patch('/updateuser',updateUser)
 
 export default router;
