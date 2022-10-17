@@ -7,7 +7,7 @@ export const deposit = (req, res) => {
     const token = req.cookies.access_token;
 
     if (!token) {
-        return res.status(401).json({ message: "No Token Found!" });
+        return res.status(400).json({ message: "No Token Found!" });
     }
 
     try {
@@ -35,18 +35,18 @@ export const deposit = (req, res) => {
                         return res.status(200)
                             .json({ message: "Deposited 😊 👌" });
                     else
-                        res.status(401).json({ message: err })
+                        res.status(400).json({ message: err })
                 })
             }
             else {
-                res.status(401).json({ message: "Amount Required" })
+                res.status(400).json({ message: "Incomplete Credentials","Required":["amount"] })
             }
         }
         else {
-            return res.status(403).json({ message: "Unauthorized!" });
+            return res.status(400).json({ message: "Unauthorized!" });
         }
     } catch {
-        return res.status(401).json({ message: "Invalid Token Found!" });
+        return res.status(400).json({ message: "Invalid Token Found!" });
     }
 }
 
@@ -54,7 +54,7 @@ export const withdrawal = (req, res) => {
     const token = req.cookies.access_token;
 
     if (!token) {
-        return res.status(401).json({ message: "No Token Found!" });
+        return res.status(400).json({ message: "No Token Found!" });
     }
     try {
         const data = jwt.verify(token, process.env.SECRET_KEY);
@@ -68,7 +68,7 @@ export const withdrawal = (req, res) => {
             Update account SET balance=@balance  where account_id=(select account_id from user_account_ref where user_id="${user_id}");
 
             set @destination_account := "${destination_account_no}";
-            set @destination_bank :="${destination_bank}";
+            set @destination_bank :="${destination_bank.toLowerCase()}";
             set @transaction_type := "external";
             set @transaction_description :=  "debit";
             set @source_account_no:=(select account_number from account where account_id=(select account_id from user_account_ref where user_id="${user_id}"));
@@ -83,20 +83,20 @@ export const withdrawal = (req, res) => {
                         return res.status(200)
                             .json({ message: "Withdrawal Successful 😊 👌" });
                     else
-                        res.status(401).json({ message: err })
+                        res.status(400).json({ message: err })
                 })
             }
             else {
-                res.status(401).json({ message: "Incomplete Credentials" })
+                res.status(400).json({ message: "Incomplete Credentials","Required":["destination_account_no" ,"destination_bank","amount"] })
             }
         }
         else {
-            return res.status(403).json({ message: "Unauthorized!" });
+            return res.status(400).json({ message: "Unauthorized!" });
         }
 
     }
     catch {
-            return res.status(401).json({ message: "Invalid Token Found!" });
+            return res.status(400).json({ message: "Invalid Token Found!" });
         }
 
     }
@@ -107,7 +107,7 @@ export const transfer = (req, res) => {
         const token = req.cookies.access_token;
 
         if (!token) {
-            return res.status(401).json({ message: "No Token Found!" });
+            return res.status(400).json({ message: "No Token Found!" });
         }
 
         try {
@@ -118,8 +118,6 @@ export const transfer = (req, res) => {
                 if (amount && destination_account_no) {
                     mysqlConnection.query(`select * from account where account_number = "${destination_account_no}";`, (err, rows, fields) => {
                         if (Object.keys(rows).length !== 0) {
-                            // return res.status(200)
-                            //     .json({ message: "Account Exist ", data: rows });
                             mysqlConnection.query(`select balance from account where account_number = (select account_number from account where account_id=(select account_id from user_account_ref where user_id="${user_id}"));`, (err, rows, fields) => {
                                 if (!err) {
                                     // res.json((parseInt(rows[0].balance))+1)
@@ -139,17 +137,17 @@ export const transfer = (req, res) => {
                                         set @destination_bank :="DemoCredit";
                                         set @transaction_type := "internal";
                                         set @transaction_description :=  "debit";
-                                        set @narration= "${narration}";
+                                        set @narration= "${narration.toLowerCase()}";
                                         set @source_account_no:=(select account_number from account where account_id=(select account_id from user_account_ref where user_id="${user_id}"));
 
                                         Insert into transaction ( user_id,source_account_no,source_bank, destination_account_no, destination_bank, amount, transaction_type, transaction_description, narration,ref_id) 
-                                        VALUES ("${user_id}",@source_account_no,@source_bank,"${destination_account_no}",@destination_bank, "${amount}", @transaction_type,@transaction_description, "${narration}",@ref_id);
+                                        VALUES ("${user_id}",@source_account_no,@source_bank,"${destination_account_no}",@destination_bank, "${amount}", @transaction_type,@transaction_description, "${narration.toLowerCase()}",@ref_id);
                                         
 
                                         set @transaction_description :=  "credit";
                                         set @user_id:=(select user_id from user_account_ref where account_id=(select account_id from account where account_number="${destination_account_no}"));
                                         Insert into transaction ( user_id,source_account_no,source_bank, destination_account_no, destination_bank, amount, transaction_type, transaction_description, narration,ref_id) 
-                                        VALUES (@user_id,@source_account_no,@source_bank,"${destination_account_no}",@destination_bank, "${amount}", @transaction_type,@transaction_description, "${narration}",@ref_id);
+                                        VALUES (@user_id,@source_account_no,@source_bank,"${destination_account_no}",@destination_bank, "${amount}", @transaction_type,@transaction_description, "${narration.toLowerCase()}",@ref_id);
 
                                     COMMIT;
                                     `, (err, rows, fields) => {
@@ -158,12 +156,12 @@ export const transfer = (req, res) => {
                                                 return res.status(200)
                                                     .json({ message: "Transfer Successful 😊 👌" });
                                             else
-                                                res.status(401).json({ message: err })
+                                                res.status(400).json({ message: err })
                                         })
 
                                     }
                                     else {
-                                        res.status(401).json({ message: "Account Balance Insufficient" })
+                                        res.status(400).json({ message: "Account Balance Insufficient" })
                                     }
                                 }
                                 else
@@ -171,18 +169,18 @@ export const transfer = (req, res) => {
                             })
                         }
                         else
-                            res.status(401).json({ message: "Account Doesnt Exist" })
+                            res.status(400).json({ message: "Account Doesnt Exist" })
                     })
                 }
                 else {
-                    res.status(401).json({ message: "Amount Required" })
+                    res.status(400).json({ message: "Incomplete Credentials","Required":["destination_account_no","amount"] })
                 }
             }
             else {
-                return res.status(403).json({ message: "Unauthorized!" });
+                return res.status(400).json({ message: "Unauthorized!" });
             }
         } catch {
-            return res.status(401).json({ message: "Invalid Token Found!" });
+            return res.status(400).json({ message: "Invalid Token Found!" });
         }
     }
 
@@ -190,7 +188,7 @@ export const transactions = (req, res) => {
     const token = req.cookies.access_token;
 
     if (!token) {
-        return res.status(401).json({ message: "No Token Found!" });
+        return res.status(400).json({ message: "No Token Found!" });
     }
     try {
         const data = jwt.verify(token, process.env.SECRET_KEY);
@@ -199,10 +197,10 @@ export const transactions = (req, res) => {
             if (!err)
                 res.status(200).send(rows);
             else
-                res.status(401).json({ message: err })
+                res.status(400).json({ message: err })
         })
     }
     catch {
-        return res.status(401).json({ message: "Invalid Token Found!" });
+        return res.status(400).json({ message: "Invalid Token Found!" });
     }
 }

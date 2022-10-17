@@ -9,7 +9,9 @@ dotenv.config()
 export const login = (req,res)=> {
     const email=req.body.email
     const password=req.body.password
-    mysqlConnection.query(`SELECT user_id,firstname, lastname, phone, email, isSuperUser,password from user where email = "${email}"`,(err, rows,fields)=>{
+
+    if(email && password){
+    mysqlConnection.query(`SELECT user_id,firstname, lastname, phone, email, isSuperUser,password from user where email = "${email.toLowerCase()}"`,(err, rows,fields)=>{
         if(Object.keys(rows).length !== 0){
            
             bcrypt.compare(password , rows[0].password, function(err, result){
@@ -24,15 +26,18 @@ export const login = (req,res)=> {
                    .json({ message: "Logged in successfully 😊 👌" });
                 }
                 else{
-                    return res.status(401).json({ message: "Incorrect" });
+                    return res.status(400).json({ message: "Incorrect" });
                     }
 
             })
         }
         else
-        return res.status(403).json({ message: "User Not Found!" });
+        return res.status(400).json({ message: "User Not Found!" });
         
-    })
+    })}
+    else{
+        res.status(400).json({ message: "Incomplete Credentials","Required":["email","password"] })
+    }
    
    
 
@@ -42,7 +47,7 @@ export const login = (req,res)=> {
 export const authorization = (token) => {
     // const token = token
     if (!token) {
-    //   return res.sendStatus(401);
+    //   return res.sendStatus(400);
     // throw new Error("No Token Found")
     return("No Token Found")
     }
