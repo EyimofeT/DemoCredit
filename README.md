@@ -17,5 +17,8 @@ to run server
 
 https://documenter.getpostman.com/view/15065406/2s847Cwv3n
 
+## Postman Collection Link
+https://www.getpostman.com/collections/d159b6e9bcc0f0655522
+
 
 EndPoints                     -         Method 
