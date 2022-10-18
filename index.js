@@ -8,6 +8,11 @@ import authRoutes from './routes/auth.js';
 import transactionsRoutes from './routes/transactions.js';
 import cors from 'cors';
 
+// import mocha from 'mocha';
+// // app.use(mocha).assert();
+// mocha.assert()
+
+
 import cookieParser from 'cookie-parser';
 
 const app = express();
