@@ -64,12 +64,13 @@ export const getUsers = (req, res) => {
                     res.status(400).json({ message: err })
             })
             // console.log("Ending connection")
-            mysqlConnection.end()
+            // mysqlConnection.end()
         }
         else {
             return res.status(400).json({ message: "Unauthorized!" });
         }
-    } catch {
+    } 
+    catch {
         return res.status(400).json({ message: "Invalid Token Found!" });
     }
 
