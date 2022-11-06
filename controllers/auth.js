@@ -1,6 +1,6 @@
 import {mysqlConnection} from '../config/db.js';
 import bcrypt from 'bcrypt';
-import cookieParser from 'cookie-parser';
+// import cookieParser from 'cookie-parser';
 import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
 dotenv.config()
@@ -34,7 +34,9 @@ export const login = (req,res)=> {
         else
         return res.status(400).json({ message: "User Not Found!" });
         
-    })}
+    })
+    mysqlConnection.end()    
+}
     else{
         res.status(400).json({ message: "Incomplete Credentials","Required":["email","password"] })
     }

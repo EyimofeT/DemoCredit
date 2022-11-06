@@ -16,4 +16,5 @@ mysqlConnection.connect((err)=>{
     console.log("Connected To Database")
     else
     console.log("Error" + JSON.stringify(err,undefined, 2))
+    
 })

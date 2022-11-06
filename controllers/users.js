@@ -1,6 +1,6 @@
 // uuid
-import { config } from 'dotenv';
-import { v4 as uuidv4 } from 'uuid';
+// import { config } from 'dotenv';
+// import { v4 as uuidv4 } from 'uuid';
 
 import { mysqlConnection } from '../config/db.js';
 import { generateAccoutNumber } from '../helpers/helperfunctions.js';
@@ -8,7 +8,7 @@ import { generateAccoutNumber } from '../helpers/helperfunctions.js';
 // import { authorization } from './auth.js';
 
 import bcrypt from 'bcrypt';
-import cookieParser from 'cookie-parser';
+// import cookieParser from 'cookie-parser';
 import jwt from 'jsonwebtoken'
 
 
@@ -37,6 +37,7 @@ export const createUser = (req, res) => {
                 else
                     res.status(400).json({ message: err })
             })
+            mysqlConnection.end()
         }
         else {
             res.status(400).json({ message: "Incomplete Credentials", "Required": ["firstname", "lastname", "phone", "email", "password"] })
@@ -62,6 +63,8 @@ export const getUsers = (req, res) => {
                 else
                     res.status(400).json({ message: err })
             })
+            // console.log("Ending connection")
+            mysqlConnection.end()
         }
         else {
             return res.status(400).json({ message: "Unauthorized!" });
@@ -87,6 +90,7 @@ export const getUser = (req, res) => {
             else
                 res.status(400).json({ message: err })
         })
+        mysqlConnection.end()
     }
     catch {
         return res.status(400).json({ message: "Invalid Token Found!" });
@@ -123,6 +127,7 @@ export const deleteUser = (req, res) => {
             else {
                 return res.status(400).json({ message: "Missing User ID!" });
             }
+            mysqlConnection.end()
         }
         else {
             return res.status(400).json({ message: "Unauthorized!" });
@@ -178,6 +183,7 @@ export const updateUser = (req, res) => {
                         }
 
                     })
+                    mysqlConnection.end()
 
                 })
 

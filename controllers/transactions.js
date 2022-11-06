@@ -115,8 +115,6 @@ export const withdrawal = (req, res) => {
 
 }
 
-
-
 export const transfer = (req, res) => {
     const token = req.cookies.access_token;
 
