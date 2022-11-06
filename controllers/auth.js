@@ -35,7 +35,7 @@ export const login = (req,res)=> {
         return res.status(400).json({ message: "User Not Found!" });
         
     })
-    mysqlConnection.end()    
+    //mysqlConnection.end()    
 }
     else{
         res.status(400).json({ message: "Incomplete Credentials","Required":["email","password"] })

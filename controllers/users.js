@@ -37,7 +37,7 @@ export const createUser = (req, res) => {
                 else
                     res.status(400).json({ message: err })
             })
-            mysqlConnection.end()
+            //mysqlConnection.end()
         }
         else {
             res.status(400).json({ message: "Incomplete Credentials", "Required": ["firstname", "lastname", "phone", "email", "password"] })
@@ -64,7 +64,7 @@ export const getUsers = (req, res) => {
                     res.status(400).json({ message: err })
             })
             // console.log("Ending connection")
-            // mysqlConnection.end()
+            // //mysqlConnection.end()
         }
         else {
             return res.status(400).json({ message: "Unauthorized!" });
@@ -91,7 +91,7 @@ export const getUser = (req, res) => {
             else
                 res.status(400).json({ message: err })
         })
-        mysqlConnection.end()
+        ////mysqlConnection.end()
     }
     catch {
         return res.status(400).json({ message: "Invalid Token Found!" });
@@ -128,7 +128,7 @@ export const deleteUser = (req, res) => {
             else {
                 return res.status(400).json({ message: "Missing User ID!" });
             }
-            mysqlConnection.end()
+            //mysqlConnection.end()
         }
         else {
             return res.status(400).json({ message: "Unauthorized!" });
@@ -184,7 +184,7 @@ export const updateUser = (req, res) => {
                         }
 
                     })
-                    mysqlConnection.end()
+                    //mysqlConnection.end()
 
                 })
 
